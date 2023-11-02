@@ -1,0 +1,254 @@
+ERROR - 2023-11-02 01:22:58 --> Error connecting to the database: Error: Class 'SQLite3' not found in C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php:89
+Stack trace:
+#0 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(392): CodeIgniter\Database\SQLite3\Connection->connect(false)
+#1 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+#3 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\alessandroisdev\biblia\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\alessandroisdev\biblia\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\alessandroisdev\biblia\app\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(942): App\Controllers\Home->testamento()
+#8 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\alessandroisdev\biblia\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#11 {main}
+CRITICAL - 2023-11-02 01:22:58 --> Unable to connect to the database.
+Main connection [SQLite3]: Class 'SQLite3' not found
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `testament`', [], false)
+ 4 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+ 7 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Home->testamento()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-02 01:23:06 --> Error connecting to the database: Error: Class 'SQLite3' not found in C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php:89
+Stack trace:
+#0 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(392): CodeIgniter\Database\SQLite3\Connection->connect(false)
+#1 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+#3 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\alessandroisdev\biblia\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\alessandroisdev\biblia\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\alessandroisdev\biblia\app\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(942): App\Controllers\Home->testamento()
+#8 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\alessandroisdev\biblia\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#11 {main}
+CRITICAL - 2023-11-02 01:23:06 --> Unable to connect to the database.
+Main connection [SQLite3]: Class 'SQLite3' not found
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `testament`', [], false)
+ 4 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+ 7 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Home->testamento()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-02 01:23:09 --> Error connecting to the database: Error: Class 'SQLite3' not found in C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php:89
+Stack trace:
+#0 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(392): CodeIgniter\Database\SQLite3\Connection->connect(false)
+#1 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+#3 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\alessandroisdev\biblia\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\alessandroisdev\biblia\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\alessandroisdev\biblia\app\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(942): App\Controllers\Home->testamento()
+#8 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\alessandroisdev\biblia\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#11 {main}
+CRITICAL - 2023-11-02 01:23:09 --> Unable to connect to the database.
+Main connection [SQLite3]: Class 'SQLite3' not found
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `testament`', [], false)
+ 4 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+ 7 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Home->testamento()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-02 01:23:17 --> Error connecting to the database: Error: Class 'SQLite3' not found in C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php:89
+Stack trace:
+#0 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(392): CodeIgniter\Database\SQLite3\Connection->connect(false)
+#1 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+#3 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\alessandroisdev\biblia\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\alessandroisdev\biblia\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\alessandroisdev\biblia\app\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(942): App\Controllers\Home->testamento()
+#8 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\alessandroisdev\biblia\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#11 {main}
+CRITICAL - 2023-11-02 01:23:17 --> Unable to connect to the database.
+Main connection [SQLite3]: Class 'SQLite3' not found
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `testament`', [], false)
+ 4 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+ 7 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Home->testamento()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-02 01:23:17 --> Error connecting to the database: Error: Class 'SQLite3' not found in C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php:89
+Stack trace:
+#0 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(392): CodeIgniter\Database\SQLite3\Connection->connect(false)
+#1 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+#3 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\alessandroisdev\biblia\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\alessandroisdev\biblia\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\alessandroisdev\biblia\app\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(942): App\Controllers\Home->testamento()
+#8 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\alessandroisdev\biblia\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#11 {main}
+CRITICAL - 2023-11-02 01:23:17 --> Unable to connect to the database.
+Main connection [SQLite3]: Class 'SQLite3' not found
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `testament`', [], false)
+ 4 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+ 7 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Home->testamento()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-02 01:23:18 --> Error connecting to the database: Error: Class 'SQLite3' not found in C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php:89
+Stack trace:
+#0 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(392): CodeIgniter\Database\SQLite3\Connection->connect(false)
+#1 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+#3 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\alessandroisdev\biblia\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\alessandroisdev\biblia\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\alessandroisdev\biblia\app\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(942): App\Controllers\Home->testamento()
+#8 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\alessandroisdev\biblia\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#11 {main}
+CRITICAL - 2023-11-02 01:23:18 --> Unable to connect to the database.
+Main connection [SQLite3]: Class 'SQLite3' not found
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `testament`', [], false)
+ 4 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+ 7 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Home->testamento()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-02 01:23:41 --> Error connecting to the database: Error: Class 'SQLite3' not found in C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php:89
+Stack trace:
+#0 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(392): CodeIgniter\Database\SQLite3\Connection->connect(false)
+#1 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+#3 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\alessandroisdev\biblia\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\alessandroisdev\biblia\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\alessandroisdev\biblia\app\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(942): App\Controllers\Home->testamento()
+#8 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\alessandroisdev\biblia\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#11 {main}
+CRITICAL - 2023-11-02 01:23:41 --> Unable to connect to the database.
+Main connection [SQLite3]: Class 'SQLite3' not found
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `testament`', [], false)
+ 4 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+ 7 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Home->testamento()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-02 01:27:27 --> Your DSN connection string is invalid.
+in SYSTEMPATH\Database\Database.php on line 94.
+ 1 SYSTEMPATH\Database\Database.php(48): CodeIgniter\Database\Database->parseDSN([...])
+ 2 SYSTEMPATH\Database\Config.php(83): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(151): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\Home.php(16): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Home->testamento()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-02 01:27:28 --> Your DSN connection string is invalid.
+in SYSTEMPATH\Database\Database.php on line 94.
+ 1 SYSTEMPATH\Database\Database.php(48): CodeIgniter\Database\Database->parseDSN([...])
+ 2 SYSTEMPATH\Database\Config.php(83): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(151): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\Home.php(16): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Home->testamento()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2023-11-02 01:27:29 --> Your DSN connection string is invalid.
+in SYSTEMPATH\Database\Database.php on line 94.
+ 1 SYSTEMPATH\Database\Database.php(48): CodeIgniter\Database\Database->parseDSN([...])
+ 2 SYSTEMPATH\Database\Config.php(83): CodeIgniter\Database\Database->load([...], 'default')
+ 3 SYSTEMPATH\Model.php(151): CodeIgniter\Database\Config::connect('default')
+ 4 APPPATH\Controllers\Home.php(16): CodeIgniter\Model->__construct()
+ 5 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Home->testamento()
+ 6 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 7 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+ERROR - 2023-11-02 01:29:25 --> Error connecting to the database: Error: Class 'SQLite3' not found in C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php:89
+Stack trace:
+#0 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(392): CodeIgniter\Database\SQLite3\Connection->connect(false)
+#1 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+#2 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+#3 C:\xampp\htdocs\alessandroisdev\biblia\system\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *\nFROM `...', Array, false)
+#4 C:\xampp\htdocs\alessandroisdev\biblia\system\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+#5 C:\xampp\htdocs\alessandroisdev\biblia\system\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+#6 C:\xampp\htdocs\alessandroisdev\biblia\app\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+#7 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(942): App\Controllers\Home->testamento()
+#8 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#9 C:\xampp\htdocs\alessandroisdev\biblia\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#10 C:\xampp\htdocs\alessandroisdev\biblia\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#11 {main}
+CRITICAL - 2023-11-02 01:29:25 --> Unable to connect to the database.
+Main connection [SQLite3]: Class 'SQLite3' not found
+in SYSTEMPATH\Database\BaseConnection.php on line 428.
+ 1 SYSTEMPATH\Database\SQLite3\Connection.php(59): CodeIgniter\Database\BaseConnection->initialize()
+ 2 SYSTEMPATH\Database\BaseConnection.php(575): CodeIgniter\Database\SQLite3\Connection->initialize()
+ 3 SYSTEMPATH\Database\BaseBuilder.php(1615): CodeIgniter\Database\BaseConnection->query('SELECT *
+FROM `testament`', [], false)
+ 4 SYSTEMPATH\Model.php(237): CodeIgniter\Database\BaseBuilder->get()
+ 5 SYSTEMPATH\BaseModel.php(624): CodeIgniter\Model->doFindAll(0, 0)
+ 6 APPPATH\Controllers\Home.php(16): CodeIgniter\BaseModel->findAll()
+ 7 SYSTEMPATH\CodeIgniter.php(942): App\Controllers\Home->testamento()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
