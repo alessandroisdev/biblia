@@ -1,22 +1,24 @@
 {
   "expo": {
-    "name": "reader",
-    "slug": "reader",
+    "name": "Bíblia Reader",
+    "slug": "biblia-reader",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "reader",
+    "scheme": "bibliareader",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.alessandroisdev.bibliareader",
+      "buildNumber": "1"
     },
     "android": {
+      "package": "com.alessandroisdev.bibliareader",
+      "versionCode": 1,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/images/icon.png"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false

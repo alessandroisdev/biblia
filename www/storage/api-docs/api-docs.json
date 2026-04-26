@@ -39,6 +39,17 @@
                 "summary": "Listar Livros",
                 "description": "Retorna os livros da Bíblia.",
                 "operationId": "0c2a5c0ec6e743b952cbf13eb062553e",
+                "parameters": [
+                    {
+                        "name": "version_id",
+                        "in": "query",
+                        "description": "ID da Versão para filtrar livros",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Operação bem sucedida"
