@@ -97,6 +97,61 @@
                     }
                 }
             }
+        },
+        "/api/v1/verse/{id}": {
+            "get": {
+                "tags": [
+                    "Bible"
+                ],
+                "summary": "Obter Versículo Específico",
+                "description": "Retorna um versículo específico pelo seu ID (ex: ARA-GN-1-1).",
+                "operationId": "d3290b85e19ace943808ce5489906ae9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID composto do Versículo",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação bem sucedida"
+                    },
+                    "404": {
+                        "description": "Versículo não encontrado"
+                    }
+                }
+            }
+        },
+        "/api/v1/search": {
+            "get": {
+                "tags": [
+                    "Bible"
+                ],
+                "summary": "Pesquisar Versículos (FTS)",
+                "description": "Busca versículos usando Full-Text Search.",
+                "operationId": "adb33425bfb08cdb51bf5a1c0f837a5e",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Termo de busca",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação bem sucedida"
+                    }
+                }
+            }
         }
     },
     "tags": [

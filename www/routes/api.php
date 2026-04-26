@@ -14,6 +14,8 @@ Route::prefix('v1')->group(function () {
     Route::get('/books', [BibleController::class, 'getBooks']);
     Route::get('/chapters/{book_id}', [BibleController::class, 'getChapters']);
     Route::get('/verses/{chapter_id}', [BibleController::class, 'getVerses']);
+    Route::get('/verse/{id}', [BibleController::class, 'getVerse']);
+    Route::get('/search', [BibleController::class, 'searchVerses']);
     
     // SSE Realtime Endpoints
     Route::get('/stream', [SSEController::class, 'stream']);

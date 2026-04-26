@@ -86,5 +86,63 @@ class BibleController extends Controller
     {
         return response()->json(Verse::where('chapter_id', $chapter_id)->get());
     }
+
+    #[OA\Get(
+        path: "/api/v1/verse/{id}",
+        summary: "Obter Versículo Específico",
+        description: "Retorna um versículo específico pelo seu ID (ex: ARA-GN-1-1).",
+        tags: ["Bible"]
+    )]
+    #[OA\Parameter(
+        name: "id",
+        in: "path",
+        required: true,
+        description: "ID composto do Versículo",
+        schema: new OA\Schema(type: "string")
+    )]
+    #[OA\Response(
+        response: 200,
+        description: "Operação bem sucedida"
+    )]
+    #[OA\Response(
+        response: 404,
+        description: "Versículo não encontrado"
+    )]
+    public function getVerse($id)
+    {
+        $verse = Verse::find($id);
+        if (!$verse) {
+            return response()->json(['error' => 'Verse not found'], 404);
+        }
+        return response()->json($verse);
+    }
+
+    #[OA\Get(
+        path: "/api/v1/search",
+        summary: "Pesquisar Versículos (FTS)",
+        description: "Busca versículos usando Full-Text Search.",
+        tags: ["Bible"]
+    )]
+    #[OA\Parameter(
+        name: "q",
+        in: "query",
+        required: true,
+        description: "Termo de busca",
+        schema: new OA\Schema(type: "string")
+    )]
+    #[OA\Response(
+        response: 200,
+        description: "Operação bem sucedida"
+    )]
+    public function searchVerses(Request $request)
+    {
+        $query = $request->query('q');
+        if (!$query) {
+            return response()->json(['error' => 'Query parameter "q" is required'], 400);
+        }
+
+        $verses = Verse::whereRaw('MATCH(text) AGAINST(? IN BOOLEAN MODE)', [$query])->get();
+        return response()->json($verses);
+    }
 }
 
