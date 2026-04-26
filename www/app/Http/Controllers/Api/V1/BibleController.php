@@ -34,13 +34,27 @@ class BibleController extends Controller
         description: "Retorna os livros da Bíblia.",
         tags: ["Bible"]
     )]
+    #[OA\Parameter(
+        name: "version_id",
+        in: "query",
+        required: false,
+        description: "ID da Versão para filtrar livros",
+        schema: new OA\Schema(type: "integer")
+    )]
     #[OA\Response(
         response: 200,
         description: "Operação bem sucedida"
     )]
-    public function getBooks()
+    public function getBooks(Request $request)
     {
-        return response()->json(Book::all());
+        $versionId = $request->query('version_id');
+        
+        $query = Book::query();
+        if ($versionId) {
+            $query->where('version_id', $versionId);
+        }
+        
+        return response()->json($query->orderBy('id')->get());
     }
 
     #[OA\Get(

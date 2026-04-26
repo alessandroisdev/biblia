@@ -6,7 +6,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { searchVerses, Verse } from '@/api/client';
 import { useThemeColor } from '@/hooks/use-theme-color';
-import debounce from 'lodash/debounce';
+import debounce from 'lodash.debounce';
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
