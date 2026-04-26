@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('version_id')->constrained()->cascadeOnDelete();
+            $table->string('name');
+            $table->string('abbreviation');
+            $table->enum('testament', ['OT', 'NT']);
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->unique(['version_id', 'abbreviation']);
         });
     }
 

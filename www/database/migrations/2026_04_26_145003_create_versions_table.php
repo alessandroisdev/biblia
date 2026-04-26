@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('versions', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('abbreviation')->unique();
+            $table->string('language')->default('pt-BR');
+            $table->string('copyright')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

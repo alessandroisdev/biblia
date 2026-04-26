@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('reading_plans', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->integer('duration_days');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('chapters', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('book_id')->constrained()->cascadeOnDelete();
+            $table->integer('number');
             $table->timestamps();
+            $table->softDeletes();
+            
+            $table->unique(['book_id', 'number']);
         });
     }
 
