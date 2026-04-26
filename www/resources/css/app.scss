@@ -1,0 +1,15 @@
+// Bootstrap e Variáveis
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+
+// Modo Escuro Nativo (suporte base)
+body {
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    font-family: 'Inter', sans-serif;
+}
+
+// Tipografia impecável e transições suaves
+a, button {
+    transition: all 0.2s ease-in-out;
+}

@@ -36,6 +36,7 @@ services:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+      - ../biblia_13V/biblia_13V.sql:/docker-entrypoint-initdb.d/biblia_13V.sql
     networks:
       - biblia_network
     command: --innodb-ft-min-token-size=2 # Otimiza Full-Text Search para palavras curtas
