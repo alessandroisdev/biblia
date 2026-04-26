@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, FlatList, ActivityIndicator, TouchableOpacity, View } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter, Stack } from 'expo-router';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -42,6 +42,7 @@ export default function BookScreen() {
 
   return (
     <ThemedView style={styles.container}>
+      <Stack.Screen options={{ title: typeof name === 'string' ? name : 'Capítulos' }} />
       {loading ? (
         <View style={styles.center}>
           <ActivityIndicator size="large" />

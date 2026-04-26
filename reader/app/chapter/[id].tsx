@@ -13,7 +13,7 @@ export default function ChapterScreen() {
   const { id, bookName, chapterNumber } = useLocalSearchParams();
   const [verses, setVerses] = useState<Verse[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedVerseIds, setSelectedVerseIds] = useState<Set<string>>(new Set());
+  const [selectedVerses, setSelectedVerses] = useState<Record<string, boolean>>({});
   const [isPlaying, setIsPlaying] = useState(false);
 
   const tintColor = useThemeColor({}, 'tint');
@@ -40,19 +40,23 @@ export default function ChapterScreen() {
   };
 
   const toggleVerseSelection = (verseId: string) => {
-    const newSelection = new Set(selectedVerseIds);
-    if (newSelection.has(verseId)) {
-      newSelection.delete(verseId);
-    } else {
-      newSelection.add(verseId);
-    }
-    setSelectedVerseIds(newSelection);
+    setSelectedVerses(prev => {
+      const newSelection = { ...prev };
+      if (newSelection[verseId]) {
+        delete newSelection[verseId];
+      } else {
+        newSelection[verseId] = true;
+      }
+      return newSelection;
+    });
   };
+
+  const getSelectedCount = () => Object.keys(selectedVerses).length;
 
   const getSelectedText = () => {
     // Return selected verses in order
     return verses
-      .filter((v) => selectedVerseIds.has(v.id))
+      .filter((v) => selectedVerses[v.id])
       .map((v) => `${v.number}. ${v.text}`)
       .join('\n');
   };
@@ -63,8 +67,8 @@ export default function ChapterScreen() {
       await Share.share({
         message: textToShare,
       });
-      // Clear selection after share?
-      setSelectedVerseIds(new Set());
+      // Clear selection after share
+      setSelectedVerses({});
     } catch (error) {
       console.error('Error sharing', error);
     }
@@ -89,25 +93,56 @@ export default function ChapterScreen() {
     });
   };
 
+  const handleSpeechAll = async () => {
+    if (isPlaying) {
+      Speech.stop();
+      setIsPlaying(false);
+      return;
+    }
+
+    const textToSpeak = verses.map(v => `${v.number}. ${v.text}`).join('\n');
+    if (!textToSpeak) return;
+
+    setIsPlaying(true);
+    Speech.speak(textToSpeak, {
+      language: 'pt-BR',
+      onDone: () => setIsPlaying(false),
+      onStopped: () => setIsPlaying(false),
+      onError: () => setIsPlaying(false),
+    });
+  };
+
   const renderVerse = ({ item }: { item: Verse }) => {
-    const isSelected = selectedVerseIds.has(item.id);
+    const isSelected = !!selectedVerses[item.id];
     
     return (
       <TouchableOpacity
         style={[styles.verseRow, isSelected && styles.verseRowSelected]}
         onPress={() => toggleVerseSelection(item.id)}
+        activeOpacity={0.7}
       >
         <ThemedText style={[styles.verseNumber, isSelected && { color: tintColor }]} type="defaultSemiBold">
           {item.number}
         </ThemedText>
-        <ThemedText style={styles.verseText}>{item.text}</ThemedText>
+        <ThemedText style={[styles.verseText, isSelected && { fontWeight: '500' }]}>{item.text}</ThemedText>
       </TouchableOpacity>
     );
   };
 
+  const selectedCount = getSelectedCount();
+
   return (
     <ThemedView style={styles.container}>
-      <Stack.Screen options={{ title: `${bookName} ${chapterNumber}` }} />
+      <Stack.Screen 
+        options={{ 
+          title: `${bookName} ${chapterNumber}`,
+          headerRight: () => (
+            <TouchableOpacity onPress={selectedCount > 0 ? handleSpeech : handleSpeechAll} style={{ marginRight: 15 }}>
+              <IconSymbol name={isPlaying ? "stop.fill" : "play.fill"} size={24} color={tintColor} />
+            </TouchableOpacity>
+          )
+        }} 
+      />
       
       {loading ? (
         <View style={styles.center}>
@@ -118,13 +153,14 @@ export default function ChapterScreen() {
           data={verses}
           keyExtractor={(item) => item.id}
           renderItem={renderVerse}
+          extraData={selectedVerses}
           contentContainerStyle={styles.listContainer}
         />
       )}
 
-      {selectedVerseIds.size > 0 && (
+      {selectedCount > 0 && (
         <View style={styles.actionBar}>
-          <ThemedText style={styles.actionText}>{selectedVerseIds.size} selecionado(s)</ThemedText>
+          <ThemedText style={styles.actionText}>{selectedCount} selecionado(s)</ThemedText>
           <View style={styles.actionButtons}>
             <TouchableOpacity style={styles.actionBtn} onPress={handleSpeech}>
               <IconSymbol name={isPlaying ? "stop.fill" : "play.fill"} size={24} color="#fff" />
@@ -159,7 +195,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   verseRowSelected: {
-    backgroundColor: 'rgba(150, 150, 150, 0.2)',
+    backgroundColor: 'rgba(0, 150, 255, 0.2)', // Highlight selection more visibly
   },
   verseNumber: {
     fontSize: 16,
@@ -173,7 +209,7 @@ const styles = StyleSheet.create({
   },
   actionBar: {
     position: 'absolute',
-    bottom: 30,
+    bottom: 40,
     left: 20,
     right: 20,
     backgroundColor: '#0a7ea4',
@@ -187,7 +223,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
     shadowRadius: 5,
-    elevation: 8,
+    elevation: 10,
+    zIndex: 100, // Ensure it sits on top of everything
   },
   actionText: {
     color: '#fff',

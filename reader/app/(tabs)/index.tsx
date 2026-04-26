@@ -1,98 +1,103 @@
-import { useState, useCallback } from 'react';
-import { StyleSheet, TextInput, FlatList, ActivityIndicator, View } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, FlatList, ActivityIndicator, View, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Picker } from '@react-native-picker/picker';
+import { useRouter } from 'expo-router';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { searchVerses, Verse } from '@/api/client';
+import { getVersions, getBooks, Version, Book } from '@/api/client';
 import { useThemeColor } from '@/hooks/use-theme-color';
-import debounce from 'lodash.debounce';
 
-export default function HomeScreen() {
+export default function ReadScreen() {
   const insets = useSafeAreaInsets();
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState<Verse[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const router = useRouter();
+  const [versions, setVersions] = useState<Version[]>([]);
+  const [books, setBooks] = useState<Book[]>([]);
+  const [selectedVersionId, setSelectedVersionId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const textColor = useThemeColor({}, 'text');
   const bgColor = useThemeColor({}, 'background');
-  const tintColor = useThemeColor({}, 'tint');
 
-  // Debounce the search to avoid spamming the API
-  const performSearch = useCallback(
-    debounce(async (searchQuery: string) => {
-      if (!searchQuery.trim()) {
-        setResults([]);
-        return;
-      }
-      
-      setLoading(true);
-      setError('');
-      
-      try {
-        const data = await searchVerses(searchQuery);
-        setResults(data);
-      } catch (err: any) {
-        setError(err.message || 'Erro ao buscar dados.');
-      } finally {
-        setLoading(false);
-      }
-    }, 500),
-    []
-  );
+  useEffect(() => {
+    loadVersions();
+  }, []);
 
-  const handleTextChange = (text: string) => {
-    setQuery(text);
-    performSearch(text);
+  useEffect(() => {
+    if (selectedVersionId) {
+      loadBooks(selectedVersionId);
+    }
+  }, [selectedVersionId]);
+
+  const loadVersions = async () => {
+    try {
+      const data = await getVersions();
+      setVersions(data);
+      if (data.length > 0) {
+        setSelectedVersionId(data[0].id);
+      }
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
   };
 
-  const renderVerse = ({ item }: { item: Verse }) => (
-    <ThemedView style={styles.verseCard}>
-      <ThemedText style={styles.verseReference} type="defaultSemiBold">
-        {item.id}
+  const loadBooks = async (versionId: number) => {
+    setLoading(true);
+    try {
+      const data = await getBooks(versionId);
+      setBooks(data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const renderBook = ({ item }: { item: Book }) => (
+    <TouchableOpacity
+      style={styles.bookCard}
+      onPress={() => router.push(`/book/${item.id}?name=${encodeURIComponent(item.name)}`)}
+    >
+      <ThemedText style={styles.bookAbbrev} type="defaultSemiBold">
+        {item.abbreviation.toUpperCase()}
       </ThemedText>
-      <ThemedText style={styles.verseText}>{item.text}</ThemedText>
-    </ThemedView>
+      <ThemedText style={styles.bookName} numberOfLines={1}>
+        {item.name}
+      </ThemedText>
+    </TouchableOpacity>
   );
 
   return (
     <ThemedView style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.header}>
-        <ThemedText type="title" style={styles.title}>Bíblia Sagrada</ThemedText>
-        <TextInput
-          style={[
-            styles.searchInput,
-            { color: textColor, borderColor: tintColor, backgroundColor: bgColor === '#fff' ? '#f0f0f0' : '#1e1e1e' }
-          ]}
-          placeholder="Pesquisar versículo (ex: Jesus, amor...)"
-          placeholderTextColor="#888"
-          value={query}
-          onChangeText={handleTextChange}
-          autoCapitalize="none"
-        />
+        <ThemedText type="title" style={styles.title}>Leitura</ThemedText>
+        <View style={[styles.pickerContainer, { borderColor: textColor }]}>
+          <Picker
+            selectedValue={selectedVersionId}
+            onValueChange={(itemValue) => setSelectedVersionId(itemValue)}
+            style={{ color: textColor }}
+            dropdownIconColor={textColor}
+          >
+            {versions.map((v) => (
+              <Picker.Item key={v.id} label={v.name} value={v.id} />
+            ))}
+          </Picker>
+        </View>
       </View>
 
-      {loading && (
-        <ActivityIndicator style={styles.loader} size="large" color={tintColor} />
+      {loading ? (
+        <ActivityIndicator style={styles.loader} size="large" />
+      ) : (
+        <FlatList
+          data={books}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={renderBook}
+          numColumns={3}
+          contentContainerStyle={styles.listContainer}
+        />
       )}
-
-      {error ? (
-        <ThemedText style={styles.errorText}>{error}</ThemedText>
-      ) : null}
-
-      {!loading && !error && query.length > 0 && results.length === 0 ? (
-        <ThemedText style={styles.emptyText}>Nenhum versículo encontrado.</ThemedText>
-      ) : null}
-
-      <FlatList
-        data={results}
-        keyExtractor={(item) => item.id}
-        renderItem={renderVerse}
-        contentContainerStyle={styles.listContainer}
-        keyboardShouldPersistTaps="handled"
-        initialNumToRender={10}
-      />
     </ThemedView>
   );
 }
@@ -110,44 +115,35 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     fontSize: 32,
   },
-  searchInput: {
-    height: 50,
+  pickerContainer: {
     borderWidth: 1,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    fontSize: 16,
+    borderRadius: 8,
+    marginBottom: 8,
+    overflow: 'hidden',
   },
   loader: {
     marginTop: 32,
   },
-  errorText: {
-    color: '#ff4444',
-    textAlign: 'center',
-    marginTop: 16,
-    paddingHorizontal: 16,
-  },
-  emptyText: {
-    textAlign: 'center',
-    marginTop: 32,
-    opacity: 0.6,
-  },
   listContainer: {
     padding: 16,
-    paddingBottom: 32,
   },
-  verseCard: {
-    marginBottom: 16,
-    padding: 16,
+  bookCard: {
+    flex: 1,
+    margin: 6,
+    aspectRatio: 1,
+    padding: 12,
     borderRadius: 12,
     backgroundColor: 'rgba(150, 150, 150, 0.1)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  verseReference: {
-    fontSize: 14,
+  bookAbbrev: {
+    fontSize: 22,
+    marginBottom: 4,
+  },
+  bookName: {
+    fontSize: 12,
     opacity: 0.7,
-    marginBottom: 8,
-  },
-  verseText: {
-    fontSize: 18,
-    lineHeight: 28,
+    textAlign: 'center',
   },
 });
