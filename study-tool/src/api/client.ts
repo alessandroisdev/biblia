@@ -27,7 +27,7 @@ export interface Book {
 }
 
 export interface Chapter {
-  id: string;
+  id: number;
   number: number;
   book_id: number;
 }
@@ -37,4 +37,9 @@ export interface Verse {
   number: number;
   text: string;
   chapter_id: string;
+  chapter?: Chapter & {
+    book?: Book & {
+      version?: Version;
+    }
+  };
 }

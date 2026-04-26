@@ -155,7 +155,11 @@ class BibleController extends Controller
             return response()->json(['error' => 'Query parameter "q" is required'], 400);
         }
 
-        $verses = Verse::whereRaw('MATCH(text) AGAINST(? IN BOOLEAN MODE)', [$query])->get();
+        $verses = Verse::with(['chapter.book.version'])
+            ->whereRaw('MATCH(text) AGAINST(? IN BOOLEAN MODE)', [$query])
+            ->limit(50) // Limite de segurança para não travar o frontend
+            ->get();
+            
         return response()->json($verses);
     }
 }
