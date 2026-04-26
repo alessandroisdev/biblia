@@ -12,6 +12,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.scss', 'resources/js/app.js'])
+    
+    <!-- DataTables CSS -->
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 </head>
 <body class="bg-body-tertiary">
 
@@ -27,13 +30,19 @@
             <div class="collapse navbar-collapse" id="navbarAdmin">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#"><i class="bi bi-journal-text me-1"></i> Versões</a>
+                        <a class="nav-link {{ request()->routeIs('admin.versions.*') ? 'active fw-bold' : '' }}" href="{{ route('admin.versions.index') }}">
+                            <i class="bi bi-journal-text me-1"></i> Versões
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-people me-1"></i> Usuários</a>
+                        <a class="nav-link {{ request()->routeIs('admin.books.*') ? 'active fw-bold' : '' }}" href="{{ route('admin.books.index') }}">
+                            <i class="bi bi-book me-1"></i> Livros
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"><i class="bi bi-bar-chart me-1"></i> Planos</a>
+                        <a class="nav-link {{ request()->routeIs('admin.verses.*') ? 'active fw-bold' : '' }}" href="{{ route('admin.verses.index') }}">
+                            <i class="bi bi-card-text me-1"></i> Versículos
+                        </a>
                     </li>
                 </ul>
                 <div class="d-flex">
@@ -74,6 +83,11 @@
         </div>
     </div>
 
+    <!-- Scripts CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    
     @stack('scripts')
 </body>
 </html>
