@@ -1,21 +1,23 @@
 # Bíblia Reader - Plataforma Teológica Full-Stack
 
-Um ecossistema completo para leitura, pesquisa e gestão de textos bíblicos, construído com tecnologias modernas. O projeto é dividido em um back-end robusto em Laravel e aplicações clientes independentes, como um app mobile construído com React Native (Expo).
+## Ecossistema de Aplicações
 
-## Arquitetura do Projeto
+O projeto é dividido em quatro pilares principais, cada um rodando em seu próprio ambiente:
 
-O projeto é monorepo e dividido nas seguintes pastas principais:
-- `/.docker`: Configuração de contêineres para o ambiente de desenvolvimento (Nginx, PHP-FPM, MariaDB, Redis).
-- `/www`: API REST (Laravel 11), Banco de Dados, e Painel Administrativo Web (Blade + Bootstrap 5).
-- `/reader`: Aplicativo Mobile Leitor (React Native / Expo / TypeScript).
-- `/display` & `/study-tool`: Interfaces clientes secundárias preparadas para expansão futura (Desktop e Web).
+1.  **`www/` (Backend & Admin)**: A API central (Laravel 13) e o painel de administração (Filament/Blade). Responsável pelo banco de dados, autenticação, ETL de Bíblias e **Gestão do Acervo de Louvor (Cache Inteligente)**.
+2.  **`reader/` (Mobile App)**: O aplicativo React Native (Expo) focado na leitura diária, com navegação fluida, modo escuro nativo e TTS (Text-To-Speech).
+3.  **`study-tool/` (Desktop Web App)**: Uma Single Page Application (React + Vite + Tailwind v4) para teólogos e pastores, contendo leitura paralela, pesquisa Full-Text Search veloz e ferramentas exegéticas.
+4.  **`display/` (Software de Projeção)**: O super projetor para igrejas. Possui uma Mesa de Controle (`/`) e uma Tela de Projeção (`/screen`) comunicando-se via `BroadcastChannel` para exibir versículos, **Letras de Músicas com background de vídeo**, e avisos animados.
 
-## 1. Back-End (Laravel API & Admin)
-Diretório: `/www`
+---
 
-### Funcionalidades
-- **API RESTFul**: Endpoints otimizados para listar Versões, Livros, Capítulos e Versículos.
-- **Busca FTS (Full-Text Search)**: Pesquisa ultra-rápida de versículos usando engine nativa do MariaDB sobre os 400k+ registros.
+## Estrutura do Banco de Dados
+
+-   **`versions`**: Traduções bíblicas (ARA, NVI, etc.).
+-   **`books`**: Livros da Bíblia (Gênesis, Apocalipse).
+-   **`chapters`**: Capítulos contendo as chaves de relacionamento.
+-   **`verses`**: O núcleo de leitura com mais de 400.000 linhas otimizadas.
+-   **`songs`**: Acervo local de letras de músicas. O backend funciona como proxy: busca na API externa (`lyrics.ovh`), salva permanentemente e retorna offline nas próximas buscas.
 - **Painel Administrativo**: Área administrativa protegida acessível em `/admin`. Gerencie Livros, Versões e edite Versículos utilizando a velocidade do DataTables (Server-Side) e Modais AJAX sem sair da página.
 - **OpenAPI / Swagger**: Toda a API está documentada dinamicamente. Acesse `http://localhost:8084/api/documentation`.
 

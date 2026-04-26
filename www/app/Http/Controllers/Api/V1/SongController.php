@@ -88,7 +88,7 @@ class SongController extends Controller
 
         // 2. Se não encontrou, busca na API lyrics.ovh
         try {
-            $url = "https://api.lyrics.ovh/v1/" . urlencode($artist) . "/" . urlencode($title);
+            $url = "https://api.lyrics.ovh/v1/" . rawurlencode($artist) . "/" . rawurlencode($title);
             $response = Http::timeout(10)->get($url);
 
             if ($response->successful() && $response->json('lyrics')) {

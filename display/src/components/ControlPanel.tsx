@@ -61,37 +61,64 @@ export function ControlPanel() {
   };
 
   // --- LYRICS STATE ---
-  const [artist, setArtist] = useState('');
-  const [song, setSong] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState<any[]>([]);
+  const [isSearchingSuggest, setIsSearchingSuggest] = useState(false);
+
   const [songSlides, setSongSlides] = useState<string[]>([]);
   const [isSearchingSong, setIsSearchingSong] = useState(false);
   const [activeLyricsIndex, setActiveLyricsIndex] = useState<number | null>(null);
 
-  const searchLyrics = async () => {
-    if (!artist || !song) return;
+  // Debounce para sugestões
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(async () => {
+      if (searchQuery.length > 2) {
+        setIsSearchingSuggest(true);
+        try {
+          const res = await axios.get(`https://api.lyrics.ovh/suggest/${encodeURIComponent(searchQuery)}`);
+          if (res.data && res.data.data) {
+            // Filtrar duplicados por nome+artista
+            const unique = res.data.data.filter((v:any,i:number,a:any[])=>a.findIndex(v2=>(v2.title===v.title && v2.artist.name===v.artist.name))===i);
+            setSuggestions(unique.slice(0, 5));
+          }
+        } catch (e) {
+          console.error(e);
+        } finally {
+          setIsSearchingSuggest(false);
+        }
+      } else {
+        setSuggestions([]);
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
+  const fetchSong = async (artistName: string, songTitle: string) => {
     setIsSearchingSong(true);
+    setSuggestions([]);
     try {
-      // Usando API aberta api.lyrics.ovh
-      const res = await axios.get(`https://api.lyrics.ovh/v1/${encodeURIComponent(artist)}/${encodeURIComponent(song)}`);
-      if (res.data && res.data.lyrics) {
-        // Formatar e fatiar letras
-        const raw = res.data.lyrics.replace(/\r\n/g, '\n');
-        // Pular a primeira linha se for "Paroles de la chanson X par Y" (às vezes a API injeta isso)
+      // Usando nosso backend Laravel como Proxy Cache!
+      const res = await axios.post(`http://localhost:8084/api/v1/songs/fetch`, {
+        artist: artistName,
+        title: songTitle
+      });
+
+      if (res.data && res.data.data && res.data.data.lyrics) {
+        const raw = res.data.data.lyrics.replace(/\r\n/g, '\n');
         const lines = raw.split('\n').filter((l: string) => l.trim() !== '');
         
         const slides = [];
         let currentSlide = [];
         for (let i = 0; i < lines.length; i++) {
           currentSlide.push(lines[i]);
-          if (currentSlide.length === 4 || i === lines.length - 1) { // 4 linhas por slide
+          if (currentSlide.length === 4 || i === lines.length - 1) { 
             slides.push(currentSlide.join('<br/>'));
             currentSlide = [];
           }
         }
         setSongSlides(slides);
         setActiveLyricsIndex(null);
-      } else {
-        alert('Letra não encontrada!');
       }
     } catch (err) {
       alert('Erro ao buscar letra. Verifique o nome do artista e música.');
@@ -315,39 +342,54 @@ export function ControlPanel() {
           {/* TAB: LYRICS */}
           {activeTab === 'lyrics' && (
             <div className="flex flex-col h-full gap-6">
-              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 flex gap-4">
-                <div className="flex-1">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Artista / Banda</label>
+              <div className="bg-white dark:bg-gray-900 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 relative">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Busca Inteligente (Letras)</label>
+                <div className="relative">
                   <input 
                     type="text" 
-                    value={artist}
-                    onChange={(e) => setArtist(e.target.value)}
-                    placeholder="Ex: Aline Barros"
-                    className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary text-gray-800 dark:text-gray-200"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Busque por artista ou música (Ex: Aline Barros Ressuscita-me)"
+                    className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary text-gray-800 dark:text-gray-200 text-lg"
                   />
+                  {isSearchingSuggest && (
+                    <div className="absolute right-3 top-3">
+                      <Loader2 className="animate-spin text-gray-400" size={24} />
+                    </div>
+                  )}
                 </div>
-                <div className="flex-1">
-                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Nome da Música</label>
-                  <input 
-                    type="text" 
-                    value={song}
-                    onChange={(e) => setSong(e.target.value)}
-                    placeholder="Ex: Ressuscita-me"
-                    className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg px-4 py-2 focus:ring-2 focus:ring-primary text-gray-800 dark:text-gray-200"
-                  />
-                </div>
-                <div className="flex items-end">
-                  <button 
-                    onClick={searchLyrics}
-                    disabled={isSearchingSong || !artist || !song}
-                    className="bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-lg font-medium disabled:opacity-50 h-[42px] flex items-center justify-center min-w-[120px]"
-                  >
-                    {isSearchingSong ? <Loader2 className="animate-spin" size={20} /> : 'Buscar Letra'}
-                  </button>
-                </div>
+
+                {/* Autocomplete Dropdown */}
+                {suggestions.length > 0 && (
+                  <div className="absolute z-50 w-[calc(100%-3rem)] mt-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl overflow-hidden">
+                    {suggestions.map((item, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          setSearchQuery(`${item.artist.name} - ${item.title}`);
+                          fetchSong(item.artist.name, item.title);
+                        }}
+                        className="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-0 flex items-center gap-3 transition-colors"
+                      >
+                        <Music className="text-primary" size={18} />
+                        <div>
+                          <div className="font-bold text-gray-800 dark:text-gray-200">{item.title}</div>
+                          <div className="text-sm text-gray-500">{item.artist.name}</div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {songSlides.length > 0 && (
+              {isSearchingSong && (
+                <div className="flex-1 flex flex-col items-center justify-center text-gray-500">
+                  <Loader2 className="animate-spin mb-4" size={48} />
+                  <p className="text-lg">Baixando e processando música no Backend...</p>
+                </div>
+              )}
+
+              {songSlides.length > 0 && !isSearchingSong && (
                 <div className="flex-1 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-y-auto p-6">
                   <h3 className="font-bold text-xl mb-4 text-gray-800 dark:text-white">Slides da Música</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

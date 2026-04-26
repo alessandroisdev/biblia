@@ -24,4 +24,9 @@ Route::prefix('v1')->group(function () {
     
     // SSE Realtime Endpoints
     Route::get('/stream', [SSEController::class, 'stream']);
+
+    Route::get('/migrate', function() {
+        \Illuminate\Support\Facades\Artisan::call('migrate');
+        return \Illuminate\Support\Facades\Artisan::output();
+    });
 });
