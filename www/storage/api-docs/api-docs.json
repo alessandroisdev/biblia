@@ -1,0 +1,108 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Bíblia Online e Gestão Teológica API",
+        "description": "API Core para os clientes Reader, Display e Study-Tool.",
+        "contact": {
+            "name": "Alessandro Dev",
+            "email": "contato@alessandroisdev.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Servidor da API"
+        }
+    ],
+    "paths": {
+        "/api/v1/versions": {
+            "get": {
+                "tags": [
+                    "Bible"
+                ],
+                "summary": "Listar Versões da Bíblia",
+                "description": "Retorna todas as versões de bíblias disponíveis.",
+                "operationId": "792c52ae8e0fbb0645b89bbaf2da81ab",
+                "responses": {
+                    "200": {
+                        "description": "Operação bem sucedida"
+                    }
+                }
+            }
+        },
+        "/api/v1/books": {
+            "get": {
+                "tags": [
+                    "Bible"
+                ],
+                "summary": "Listar Livros",
+                "description": "Retorna os livros da Bíblia.",
+                "operationId": "0c2a5c0ec6e743b952cbf13eb062553e",
+                "responses": {
+                    "200": {
+                        "description": "Operação bem sucedida"
+                    }
+                }
+            }
+        },
+        "/api/v1/chapters/{book_id}": {
+            "get": {
+                "tags": [
+                    "Bible"
+                ],
+                "summary": "Listar Capítulos",
+                "description": "Retorna os capítulos de um determinado livro.",
+                "operationId": "71e1056aeefe3f3f7fb00657834df7d8",
+                "parameters": [
+                    {
+                        "name": "book_id",
+                        "in": "path",
+                        "description": "ID do Livro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação bem sucedida"
+                    }
+                }
+            }
+        },
+        "/api/v1/verses/{chapter_id}": {
+            "get": {
+                "tags": [
+                    "Bible"
+                ],
+                "summary": "Listar Versículos",
+                "description": "Retorna os versículos de um determinado capítulo.",
+                "operationId": "e6296a9cc150a6a7b69cf3c9684db7fa",
+                "parameters": [
+                    {
+                        "name": "chapter_id",
+                        "in": "path",
+                        "description": "ID do Capítulo",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Operação bem sucedida"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Bible",
+            "description": "Bible"
+        }
+    ]
+}
