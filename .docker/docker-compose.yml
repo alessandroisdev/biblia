@@ -20,6 +20,7 @@ services:
     container_name: biblia_php
     volumes:
       - ../www:/var/www/html
+      - ../biblia_13V:/var/www/biblia_13V
     networks:
       - biblia_network
 

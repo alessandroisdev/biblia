@@ -1,98 +1,153 @@
-import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { useState, useCallback } from 'react';
+import { StyleSheet, TextInput, FlatList, ActivityIndicator, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Link } from 'expo-router';
+import { searchVerses, Verse } from '@/api/client';
+import { useThemeColor } from '@/hooks/use-theme-color';
+import debounce from 'lodash/debounce';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12',
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <Link href="/modal">
-          <Link.Trigger>
-            <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-          </Link.Trigger>
-          <Link.Preview />
-          <Link.Menu>
-            <Link.MenuAction title="Action" icon="cube" onPress={() => alert('Action pressed')} />
-            <Link.MenuAction
-              title="Share"
-              icon="square.and.arrow.up"
-              onPress={() => alert('Share pressed')}
-            />
-            <Link.Menu title="More" icon="ellipsis">
-              <Link.MenuAction
-                title="Delete"
-                icon="trash"
-                destructive
-                onPress={() => alert('Delete pressed')}
-              />
-            </Link.Menu>
-          </Link.Menu>
-        </Link>
+  const insets = useSafeAreaInsets();
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState<Verse[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+  const textColor = useThemeColor({}, 'text');
+  const bgColor = useThemeColor({}, 'background');
+  const tintColor = useThemeColor({}, 'tint');
+
+  // Debounce the search to avoid spamming the API
+  const performSearch = useCallback(
+    debounce(async (searchQuery: string) => {
+      if (!searchQuery.trim()) {
+        setResults([]);
+        return;
+      }
+      
+      setLoading(true);
+      setError('');
+      
+      try {
+        const data = await searchVerses(searchQuery);
+        setResults(data);
+      } catch (err: any) {
+        setError(err.message || 'Erro ao buscar dados.');
+      } finally {
+        setLoading(false);
+      }
+    }, 500),
+    []
+  );
+
+  const handleTextChange = (text: string) => {
+    setQuery(text);
+    performSearch(text);
+  };
+
+  const renderVerse = ({ item }: { item: Verse }) => (
+    <ThemedView style={styles.verseCard}>
+      <ThemedText style={styles.verseReference} type="defaultSemiBold">
+        {item.id}
+      </ThemedText>
+      <ThemedText style={styles.verseText}>{item.text}</ThemedText>
+    </ThemedView>
+  );
+
+  return (
+    <ThemedView style={[styles.container, { paddingTop: insets.top }]}>
+      <View style={styles.header}>
+        <ThemedText type="title" style={styles.title}>Bíblia Sagrada</ThemedText>
+        <TextInput
+          style={[
+            styles.searchInput,
+            { color: textColor, borderColor: tintColor, backgroundColor: bgColor === '#fff' ? '#f0f0f0' : '#1e1e1e' }
+          ]}
+          placeholder="Pesquisar versículo (ex: Jesus, amor...)"
+          placeholderTextColor="#888"
+          value={query}
+          onChangeText={handleTextChange}
+          autoCapitalize="none"
+        />
+      </View>
+
+      {loading && (
+        <ActivityIndicator style={styles.loader} size="large" color={tintColor} />
+      )}
+
+      {error ? (
+        <ThemedText style={styles.errorText}>{error}</ThemedText>
+      ) : null}
+
+      {!loading && !error && query.length > 0 && results.length === 0 ? (
+        <ThemedText style={styles.emptyText}>Nenhum versículo encontrado.</ThemedText>
+      ) : null}
+
+      <FlatList
+        data={results}
+        keyExtractor={(item) => item.id}
+        renderItem={renderVerse}
+        contentContainerStyle={styles.listContainer}
+        keyboardShouldPersistTaps="handled"
+        initialNumToRender={10}
+      />
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  container: {
+    flex: 1,
   },
-  stepContainer: {
-    gap: 8,
+  header: {
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    paddingTop: 24,
+  },
+  title: {
+    marginBottom: 16,
+    fontSize: 32,
+  },
+  searchInput: {
+    height: 50,
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    fontSize: 16,
+  },
+  loader: {
+    marginTop: 32,
+  },
+  errorText: {
+    color: '#ff4444',
+    textAlign: 'center',
+    marginTop: 16,
+    paddingHorizontal: 16,
+  },
+  emptyText: {
+    textAlign: 'center',
+    marginTop: 32,
+    opacity: 0.6,
+  },
+  listContainer: {
+    padding: 16,
+    paddingBottom: 32,
+  },
+  verseCard: {
+    marginBottom: 16,
+    padding: 16,
+    borderRadius: 12,
+    backgroundColor: 'rgba(150, 150, 150, 0.1)',
+  },
+  verseReference: {
+    fontSize: 14,
+    opacity: 0.7,
     marginBottom: 8,
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  verseText: {
+    fontSize: 18,
+    lineHeight: 28,
   },
 });
