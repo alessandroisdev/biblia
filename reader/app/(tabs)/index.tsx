@@ -58,7 +58,7 @@ export default function ReadScreen() {
   const renderBook = ({ item }: { item: Book }) => (
     <TouchableOpacity
       style={styles.bookCard}
-      onPress={() => router.push(`/book/${item.id}?name=${encodeURIComponent(item.name)}`)}
+      onPress={() => router.push(`/${item.abbreviation.toUpperCase()}?bookId=${item.id}&name=${encodeURIComponent(item.name)}`)}
     >
       <ThemedText style={styles.bookAbbrev} type="defaultSemiBold">
         {item.abbreviation.toUpperCase()}
