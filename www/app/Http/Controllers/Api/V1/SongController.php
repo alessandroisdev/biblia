@@ -86,30 +86,59 @@ class SongController extends Controller
             ]);
         }
 
-        // 2. Se não encontrou, busca na API lyrics.ovh
+        // 2. Tenta buscar na API lyrics.ovh
         try {
-            $url = "https://api.lyrics.ovh/v1/" . rawurlencode($artist) . "/" . rawurlencode($title);
-            $response = Http::timeout(10)->get($url);
+            $urlOvh = "https://api.lyrics.ovh/v1/" . rawurlencode($artist) . "/" . rawurlencode($title);
+            $responseOvh = Http::timeout(5)->get($urlOvh);
 
-            if ($response->successful() && $response->json('lyrics')) {
-                $lyrics = $response->json('lyrics');
-
-                // Salva no Banco
-                $newSong = Song::create([
-                    'artist' => $artist,
-                    'title' => $title,
-                    'lyrics' => $lyrics
-                ]);
-
-                return response()->json([
-                    'source' => 'api',
-                    'data' => $newSong
-                ]);
+            if ($responseOvh->successful() && $responseOvh->json('lyrics')) {
+                $lyrics = $responseOvh->json('lyrics');
+                return $this->saveAndReturnSong($artist, $title, $lyrics, 'api.lyrics.ovh');
             }
-        } catch (\Exception $e) {
-            // Fails silently to return 404
-        }
+        } catch (\Exception $e) {}
 
-        return response()->json(['message' => 'Letra não encontrada.'], 404);
+        // 3. Fallback: Scraper direto do Letras.mus.br (Excelente para músicas gospel brasileiras)
+        try {
+            $slugArtist = \Illuminate\Support\Str::slug($artist);
+            $slugTitle = \Illuminate\Support\Str::slug($title);
+            $urlLetras = "https://www.letras.mus.br/{$slugArtist}/{$slugTitle}/";
+            
+            $responseLetras = Http::timeout(10)
+                ->withHeaders(['User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'])
+                ->get($urlLetras);
+
+            if ($responseLetras->successful()) {
+                $html = $responseLetras->body();
+                if (preg_match('/class="lyric-original">(.*?)<\/div>/s', $html, $matches)) {
+                    $lyricHtml = $matches[1];
+                    // Converte <p> e <br> para quebras de linha reais
+                    $lyricHtml = preg_replace('/<p(.*?)>/', '', $lyricHtml);
+                    $lyricHtml = str_replace('</p>', "\n\n", $lyricHtml);
+                    $lyricHtml = str_replace(['<br/>', '<br>', '<br />'], "\n", $lyricHtml);
+                    
+                    $lyrics = trim(strip_tags($lyricHtml));
+                    
+                    if (!empty($lyrics)) {
+                        return $this->saveAndReturnSong($artist, $title, $lyrics, 'scraper_letras');
+                    }
+                }
+            }
+        } catch (\Exception $e) {}
+
+        return response()->json(['message' => 'Letra não encontrada na API ou no Scraper.'], 404);
+    }
+
+    private function saveAndReturnSong($artist, $title, $lyrics, $source)
+    {
+        $newSong = Song::create([
+            'artist' => $artist,
+            'title' => $title,
+            'lyrics' => $lyrics
+        ]);
+
+        return response()->json([
+            'source' => $source,
+            'data' => $newSong
+        ]);
     }
 }
